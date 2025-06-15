@@ -263,6 +263,49 @@ class MarpPWA {
         }
     }
 
+    printSlides() {
+        if (this.slides.length === 0) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
+
+        const customStyle = document.getElementById('marp-custom-styles');
+        const customCSS = customStyle ? customStyle.textContent : '';
+
+        const html = `<!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <link rel="stylesheet" href="style.css">
+                <style>
+                ${customCSS}
+                @media print { section { page-break-after: always; } }
+                body { margin: 0; }
+                </style>
+            </head>
+            <body>
+                ${this.slides.join('')}
+            </body>
+            </html>`;
+
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
+
+        iframe.onload = () => {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            setTimeout(() => iframe.remove(), 100);
+        };
+    }
+
     showError(message) {
         const errorMessage = document.getElementById('errorMessage');
         if (errorMessage) {
@@ -276,9 +319,11 @@ class MarpPWA {
         const nextButton = document.getElementById('nextSlide');
         const backButton = document.getElementById('backToSelect');
         const retryButton = document.getElementById('retryButton');
+        const printButton = document.getElementById('printSlides');
 
         if (prevButton) prevButton.addEventListener('click', () => this.prevSlide());
         if (nextButton) nextButton.addEventListener('click', () => this.nextSlide());
+        if (printButton) printButton.addEventListener('click', () => this.printSlides());
 
         if (backButton) {
             backButton.addEventListener('click', () => {
