@@ -3,99 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARP スライドビューア</title>
-    <meta name="description" content="MARPマークダウンプレゼンテーションを表示するPWA">
-    <meta name="theme-color" content="#21808d">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTUFSUCDjgrnjg6njgqTjg4jjg5Pjg6Xjg7zjgqIiLCJzaG9ydF9uYW1lIjoiTUFSUCBWaWV3ZXIiLCJkZXNjcmlwdGlvbiI6Ik1BUlDjg57jg7zjgq/jg4Djgqbjg7Pjg5fjg6zjgrzjg7Pjg4bjg7zjgrfjg6fjg7PjgpLooajnpLrjgZnjgotQV0EiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmY2ZjZjkiLCJ0aGVtZV9jb2xvciI6IiMyMTgwOGQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRrNUlpQm9aV2xuYUhROUlqRTVPU0lnZG1sbGQwSnZlRDBpTUNBd0lERTVPU0F4T1RraUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU1UYzVJaUJvWldsbmFIUTlJakUzT1NJZ1ptbHNiRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqSWlMejQ4ZEdWNGRIZ3lJSGs5SWpFeE5TSWdlVDBpT0RBaUlHVnRjejBpWXk0eU5TQXdJR05oYkNneExtVndlQ2tnZUNFOU1EVTRNQ0J6UTNGNUlDazdiMmxzT21SbFptRjFiSFFpSUdac2JITmZhV1E5SWpOaE9HVXhNV1YwT0RCaElqNE5Qa0ZTVUE0OEwzUmxlSFIrUEM5emRtYysiLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9LHsic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnZG1sbGQwSnZlRDBpTUNBd0lEVXhNaUExTVRJaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1qVWlJSGs5SWpJMUlpQjNhV1IwYUQwaU5EWXlJaUJvWldsbmFIUTlJalEyTWlJZ1ptbHNiRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqVWlMejQ4ZEdWNGRIZ3lJSGs5SWpJMU5pSWdlVDBpTWpFd0lpQmxiWE05SWpBdU5qVnNjM0JzZUNoQk9HTjFjV3NaVVVOSkszUElyWVJHYVVsMVlhVWllMVZwU1o5SGVpVm5leUJ6UTFGNUtDd2dUVGcxTnpOdmFTRklaVGRzWEcxWlNIVk9Va0ppWWtORFNHSjliR0ZmY1NCelpqSmpaWFV3VEVKSlYwOVhNRzV5Y1ZVZ1ptVmlSNDlwVWtkYWVuZFdJaUJwYkdGa1pXVnNQU0o2TWk5TGMzVTJaMlZzWEMxNkxqTlZibUY5Um1seE5IcHhhemNyVW1KcGRYRGplWGxCUnk5eVVYY2lJR1pwYkd4ZmMzUmdkRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqVWlMejQ4ZEdWNGRIZ3lJSGs5SWpJMU5pSWdlVDBpTWpjMElpQmxiWE05SWpFdU1qVnNjM0JzWEZoaU8yVm5haUp1SUdac2JITmZhV1E5SWpOaE9HVXhNV1YwT0RCaElqNE5Qa0ZTVUE0OEwzUmxlSFIrUEM5emRtYysiLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XSwiY2F0ZWdvcmllcyI6WyJwcm9kdWN0aXZpdHkiLCJidXNpbmVzcyJdfQ==">
-    
-    <!-- CSS -->
+    <title>MARPスライドビューア</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#21808D">
+    <meta name="description" content="MARPスライドプレゼンテーション用PWA">
     
-    <!-- Preload MARP Core -->
-    <link rel="modulepreload" href="https://esm.sh/@marp-team/marp-core?bundle">
-    
-    <!-- iOS PWA Support -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="MARPビューア">
+    <!-- PWA icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMyMTgwOEQiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjIiLz4KPHA+PHRleHQgeD0iMTIiIHk9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgiIGZpbGw9IndoaXRlIj5NQVJQPC90ZXh0PjwvcD4KPC9zdmc+Cjwvc3ZnPgo=">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMyMTgwOEQiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjIiLz4KPHA+PHRleHQgeD0iMTIiIHk9IjE2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjgiIGZpbGw9IndoaXRlIj5NQVJQPC90ZXh0PjwvcD4KPC9zdmc+Cjwvc3ZnPgo=">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <h1 class="app-title">MARP スライドビューア</h1>
-                <div class="header-controls">
-                    <button class="btn btn--secondary btn--sm" id="themeToggle" title="テーマ切り替え">
-                        🌙
+    <div id="app">
+        <!-- File Upload Area -->
+        <div id="upload-area" class="upload-area">
+            <div class="upload-content">
+                <div class="upload-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17,8 12,3 7,8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                </div>
+                <h2>MARPファイルをアップロード</h2>
+                <p>ファイルをドラッグ＆ドロップするか、クリックして選択してください</p>
+                <input type="file" id="file-input" accept=".md,.marp,.txt" class="hidden">
+                <button type="button" class="btn btn--primary" onclick="document.getElementById('file-input').click()">
+                    ファイルを選択
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <p>スライドを処理中...</p>
+        </div>
+
+        <!-- Error Display -->
+        <div id="error" class="error-display hidden">
+            <div class="error-content">
+                <div class="error-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                </div>
+                <h3>エラーが発生しました</h3>
+                <p id="error-message"></p>
+                <button type="button" class="btn btn--outline" onclick="resetApp()">
+                    戻る
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide Presentation -->
+        <div id="presentation" class="presentation hidden">
+            <!-- Navigation Header -->
+            <header class="presentation-header">
+                <div class="header-left">
+                    <button type="button" class="btn btn--outline btn--sm" onclick="resetApp()" aria-label="戻る">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                        戻る
                     </button>
-                    <button class="btn btn--primary btn--sm" id="loadFileBtn">
-                        📁 ファイルを開く
+                </div>
+                <div class="slide-counter">
+                    <span id="current-slide">1</span> / <span id="total-slides">1</span>
+                </div>
+                <div class="header-right">
+                    <button type="button" id="fullscreen-btn" class="btn btn--outline btn--sm" onclick="toggleFullscreen()" aria-label="フルスクリーン">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
                     </button>
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- File Upload Area -->
-            <div class="file-drop-zone" id="fileDropZone">
-                <div class="file-drop-content">
-                    <div class="file-drop-icon">📄</div>
-                    <h2>MARPファイルをここにドロップ</h2>
-                    <p>または<button class="btn btn--outline" id="selectFileBtn">ファイルを選択</button></p>
-                    <p class="file-drop-note">対応形式: .md, .marp, .markdown</p>
-                </div>
+            <!-- Slide Container -->
+            <div id="slide-container" class="slide-container">
+                <div id="slide-content" class="slide-content"></div>
             </div>
 
-            <!-- Slide Display Area -->
-            <div class="slide-container" id="slideContainer" style="display: none;">
-                <div class="slide-wrapper">
-                    <div class="slide-content" id="slideContent"></div>
-                </div>
-                
-                <!-- Slide Navigation -->
-                <div class="slide-nav">
-                    <button class="nav-btn" id="firstSlideBtn" title="最初のスライド">⏮</button>
-                    <button class="nav-btn" id="prevSlideBtn" title="前のスライド">◀</button>
-                    <div class="slide-counter">
-                        <span id="currentSlide">1</span> / <span id="totalSlides">1</span>
-                    </div>
-                    <button class="nav-btn" id="nextSlideBtn" title="次のスライド">▶</button>
-                    <button class="nav-btn" id="lastSlideBtn" title="最後のスライド">⏭</button>
-                </div>
-
-                <!-- Progress Bar -->
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
+            <!-- Navigation Controls -->
+            <div class="navigation-controls">
+                <button type="button" id="prev-btn" class="nav-btn nav-btn--prev" onclick="previousSlide()" aria-label="前のスライド" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                </button>
+                <button type="button" id="next-btn" class="nav-btn nav-btn--next" onclick="nextSlide()" aria-label="次のスライド">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </button>
             </div>
-        </main>
 
-        <!-- Footer -->
-        <footer class="app-footer">
-            <p>MARP PWA - Progressive Web App for Markdown Presentations</p>
-            <div class="keyboard-shortcuts">
-                <span>⌨️ キーボード操作: ←→ スライド移動 | Space 次へ | Home/End 最初/最後</span>
-            </div>
-        </footer>
+            <!-- Touch Navigation Zones -->
+            <div class="touch-nav touch-nav--left" onclick="previousSlide()" aria-label="前のスライド"></div>
+            <div class="touch-nav touch-nav--right" onclick="nextSlide()" aria-label="次のスライド"></div>
+        </div>
     </div>
 
-    <!-- Hidden File Input -->
-    <input type="file" id="fileInput" accept=".md,.marp,.markdown" style="display: none;">
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdtYXJwLXB3YS12MSc7CmNvbnN0IFVSTFNUX1RPX0NBQ0hFID0gWwogICcuLycsCiAgJy4vaW5kZXguaHRtbCcsCiAgJy4vc3R5bGUuY3NzJywKICAnLi9hcHAuanMnLAogICdodHRwczovL2VzbS5zaC9AbWFycC10ZWFtL21hcnAtY29yZT9idW5kbGUnLAogICdodHRwczovL2VzbS5zaC9AbWFycC10ZWFtL21hcnAtY29yZS9icm93c2VyP2J1bmRsZScKXTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsIGV2ZW50ID0+IHsKICBldmVudC53YWl0VW50aWwoY2FjaGVzLm9wZW4oQ0FDSEVfTkFNRSkudGhlbihjYWNoZSA9PiBjYWNoZS5hZGRBbGwoVVJMU19UT19DQUNIRSkpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpLnRoZW4ocmVzcG9uc2UgPT4gewogICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICB9KQogICk7Cn0pOw==')
-              .then(registration => console.log('Service Worker registered'))
-              .catch(error => console.log('Service Worker registration failed:', error));
-        }
-    </script>
-
-    <!-- App JavaScript -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
