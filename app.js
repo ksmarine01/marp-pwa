@@ -1,425 +1,336 @@
-// Import Marp Core from ESM CDN
 import { Marp } from 'https://esm.sh/@marp-team/marp-core?bundle';
 
-// Application States
 const APP_STATES = {
     FILE_SELECT: 'file-select',
     PROCESSING: 'processing',
     SLIDE_VIEW: 'slide-view',
-    ERROR: 'error'
+    ERROR: 'error',
 };
 
-// Global variables
-let currentSlideIndex = 0;
-let totalSlides = 0;
-let slides = [];
-let marp = null;
+class MarpPWA {
+    constructor() {
+        this.currentSlideIndex = 0;
+        this.totalSlides = 0;
+        this.slides = [];
+        this.marp = null;
+    }
 
-// Initialize Marp instance with configuration
-function initializeMarp() {
-    marp = new Marp({
-        html: true,
-        markdown: {
+    initialize() {
+        try {
+            this.initializeMarp();
+            this.setupFileHandling();
+            this.setupNavigation();
+            this.showState(APP_STATES.FILE_SELECT);
+            console.log('MARP PWA initialized successfully');
+        } catch (error) {
+            console.error('Initialization error:', error);
+            this.showError(`アプリケーションの初期化中にエラーが発生しました: ${error.message}`);
+        }
+    }
+
+    initializeMarp() {
+        this.marp = new Marp({
             html: true,
-            breaks: true,
-            linkify: true
-        },
-        emoji: {
-            shortcode: true,
-            unicode: true
-        }
-    });
-    
-    // Enable custom themes and CSS
-    marp.themeSet.default = marp.themeSet.default || {};
-}
+            markdown: {
+                html: true,
+                breaks: true,
+                linkify: true,
+            },
+            emoji: {
+                shortcode: true,
+                unicode: true,
+            },
+        });
 
-// State management
-function showState(state) {
-    // Hide all states
-    Object.values(APP_STATES).forEach(s => {
-        const element = document.getElementById(s);
-        if (element) {
-            element.classList.remove('active');
-        }
-    });
-    
-    // Show the specified state
-    const targetElement = document.getElementById(state);
-    if (targetElement) {
-        targetElement.classList.add('active');
+        this.marp.themeSet.default = this.marp.themeSet.default || {};
     }
-}
 
-// File handling
-function setupFileHandling() {
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    
-    // File input change handler
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            handleFile(file);
-        }
-    });
-    
-    // Drop zone click handler
-    dropZone.addEventListener('click', () => {
-        fileInput.click();
-    });
-    
-    // Drag and drop handlers
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('drag-over');
-    });
-    
-    dropZone.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-    });
-    
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFile(files[0]);
-        }
-    });
-}
+    showState(state) {
+        Object.values(APP_STATES).forEach((s) => {
+            const el = document.getElementById(s);
+            if (el) el.classList.remove('active');
+        });
 
-// Handle file processing
-async function handleFile(file) {
-    // Validate file type
-    const validExtensions = ['.md', '.marp', '.markdown'];
-    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-    
-    if (!validExtensions.includes(fileExtension)) {
-        showError('サポートされていないファイル形式です。.md, .marp, .markdown ファイルを選択してください。');
-        return;
+        const target = document.getElementById(state);
+        if (target) target.classList.add('active');
     }
-    
-    try {
-        // Show processing state
-        showState(APP_STATES.PROCESSING);
-        
-        // Read file content
-        const content = await readFileAsText(file);
-        
-        // Process MARP content
-        await processMarpContent(content);
-        
-        // Show slide view
-        showState(APP_STATES.SLIDE_VIEW);
-        updateSlideCounter();
-        
-    } catch (error) {
-        console.error('File processing error:', error);
-        showError(`ファイルの処理中にエラーが発生しました: ${error.message}`);
-    }
-}
 
-// Read file as text
-function readFileAsText(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = (e) => reject(new Error('ファイルの読み込みに失敗しました'));
-        reader.readAsText(file);
-    });
-}
+    setupFileHandling() {
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
 
-// Process MARP content
-async function processMarpContent(content) {
-    try {
-        // Extract and process custom CSS/themes from the content
-        const processedContent = await processCustomStyles(content);
-        
-        // Render MARP content
-        const { html, css } = marp.render(processedContent);
-        
-        // Apply custom styles
-        applyCustomStyles(css);
-        
-        // Parse slides from HTML
-        parseSlides(html);
-        
-        if (slides.length === 0) {
-            throw new Error('スライドが見つかりませんでした');
-        }
-        
-        // Display first slide
-        currentSlideIndex = 0;
-        displayCurrentSlide();
-        
-    } catch (error) {
-        throw new Error(`MARP処理エラー: ${error.message}`);
-    }
-}
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) this.handleFile(file);
+        });
 
-// Process custom styles and themes
-async function processCustomStyles(content) {
-    let processedContent = content;
-    
-    // Extract @theme directive
-    const themeMatch = content.match(/<!--\s*theme:\s*(\S+)\s*-->/i) || 
-                      content.match(/^<!--\s*@theme:\s*(\S+)\s*-->$/mi);
-    
-    if (themeMatch) {
-        console.log(`Theme detected: ${themeMatch[1]}`);
-        // MARP Core will handle built-in themes automatically
-    }
-    
-    // Extract custom CSS from HTML comments or style blocks
-    const cssBlocks = [];
-    
-    // Look for <!-- $theme: css --> blocks
-    const themeRegex = /<!--\s*\$theme:\s*css\s*-->([\s\S]*?)<!--\s*\/\$theme\s*-->/gi;
-    let themeMatch2;
-    while ((themeMatch2 = themeRegex.exec(content)) !== null) {
-        cssBlocks.push(themeMatch2[1].trim());
-    }
-    
-    // Look for <style> blocks
-    const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
-    let styleMatch;
-    while ((styleMatch = styleRegex.exec(content)) !== null) {
-        cssBlocks.push(styleMatch[1].trim());
-    }
-    
-    // If we found custom CSS, store it for later application
-    if (cssBlocks.length > 0) {
-        const customCSS = cssBlocks.join('\n');
-        // Store for later application
-        window.customMarpCSS = customCSS;
-    }
-    
-    return processedContent;
-}
+        dropZone.addEventListener('click', () => fileInput.click());
 
-// Apply custom styles
-function applyCustomStyles(marpCSS) {
-    // Remove existing custom styles
-    const existingStyle = document.getElementById('marp-custom-styles');
-    if (existingStyle) {
-        existingStyle.remove();
-    }
-    
-    // Create new style element
-    const styleElement = document.createElement('style');
-    styleElement.id = 'marp-custom-styles';
-    
-    // Combine MARP generated CSS with custom CSS
-    let combinedCSS = marpCSS || '';
-    
-    // Add stored custom CSS
-    if (window.customMarpCSS) {
-        combinedCSS += '\n' + window.customMarpCSS;
-    }
-    
-    // Add emoji size fixes
-    combinedCSS += `
-        /* Emoji size fixes */
-        .slide-content img[alt*="emoji"],
-        .slide-content .emoji,
-        .slide-content img[src*="emoji"] {
-            height: 1.2em !important;
-            width: 1.2em !important;
-            max-height: 1.2em !important;
-            max-width: 1.2em !important;
-            display: inline-block !important;
-            vertical-align: -0.2em !important;
-            margin: 0 0.1em !important;
-            object-fit: contain !important;
-        }
-        
-        /* MARP section styling enhancements */
-        .slide-content section {
-            box-sizing: border-box;
-        }
-        
-        .slide-content section[data-theme] {
-            /* Allow theme-specific styling */
-        }
-    `;
-    
-    styleElement.textContent = combinedCSS;
-    document.head.appendChild(styleElement);
-}
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
 
-// Parse slides from HTML
-function parseSlides(html) {
-    // Create a temporary container to parse HTML
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    
-    // Find all section elements (MARP slides)
-    const sections = tempDiv.querySelectorAll('section');
-    
-    slides = Array.from(sections).map(section => section.outerHTML);
-    totalSlides = slides.length;
-    
-    // Update total slides counter
-    const totalSlidesElement = document.getElementById('totalSlides');
-    if (totalSlidesElement) {
-        totalSlidesElement.textContent = totalSlides;
-    }
-}
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+        });
 
-// Display current slide
-function displayCurrentSlide() {
-    const slideContent = document.getElementById('slideContent');
-    if (slideContent && slides[currentSlideIndex]) {
-        slideContent.innerHTML = slides[currentSlideIndex];
-        
-        // Process any images for emoji handling
-        const images = slideContent.querySelectorAll('img');
-        images.forEach(img => {
-            if (img.alt && (img.alt.includes('emoji') || img.src.includes('emoji'))) {
-                img.classList.add('emoji');
-            }
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) this.handleFile(files[0]);
         });
     }
-    
-    updateSlideCounter();
-}
 
-// Update slide counter
-function updateSlideCounter() {
-    const currentSlideElement = document.getElementById('currentSlide');
-    if (currentSlideElement) {
-        currentSlideElement.textContent = currentSlideIndex + 1;
-    }
-}
+    async handleFile(file) {
+        const validExtensions = ['.md', '.marp', '.markdown'];
+        const ext = '.' + file.name.split('.').pop().toLowerCase();
 
-// Navigation functions
-function nextSlide() {
-    if (currentSlideIndex < totalSlides - 1) {
-        currentSlideIndex++;
-        displayCurrentSlide();
-    }
-}
-
-function prevSlide() {
-    if (currentSlideIndex > 0) {
-        currentSlideIndex--;
-        displayCurrentSlide();
-    }
-}
-
-function goToSlide(index) {
-    if (index >= 0 && index < totalSlides) {
-        currentSlideIndex = index;
-        displayCurrentSlide();
-    }
-}
-
-// Error handling
-function showError(message) {
-    const errorMessage = document.getElementById('errorMessage');
-    if (errorMessage) {
-        errorMessage.textContent = message;
-    }
-    showState(APP_STATES.ERROR);
-}
-
-// Setup navigation
-function setupNavigation() {
-    // Button event listeners
-    const prevButton = document.getElementById('prevSlide');
-    const nextButton = document.getElementById('nextSlide');
-    const backButton = document.getElementById('backToSelect');
-    const retryButton = document.getElementById('retryButton');
-    
-    if (prevButton) {
-        prevButton.addEventListener('click', prevSlide);
-    }
-    
-    if (nextButton) {
-        nextButton.addEventListener('click', nextSlide);
-    }
-    
-    if (backButton) {
-        backButton.addEventListener('click', () => {
-            showState(APP_STATES.FILE_SELECT);
-            // Reset file input
-            const fileInput = document.getElementById('fileInput');
-            if (fileInput) {
-                fileInput.value = '';
-            }
-        });
-    }
-    
-    if (retryButton) {
-        retryButton.addEventListener('click', () => {
-            showState(APP_STATES.FILE_SELECT);
-        });
-    }
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        // Only handle keyboard events when in slide view
-        const slideView = document.getElementById('slide-view');
-        if (!slideView || !slideView.classList.contains('active')) {
+        if (!validExtensions.includes(ext)) {
+            this.showError('サポートされていないファイル形式です。.md, .marp, .markdown ファイルを選択してください。');
             return;
         }
-        
-        switch (e.key) {
-            case 'ArrowLeft':
-            case 'ArrowUp':
-                e.preventDefault();
-                prevSlide();
-                break;
-            case 'ArrowRight':
-            case 'ArrowDown':
-                e.preventDefault();
-                nextSlide();
-                break;
-            case 'Home':
-                e.preventDefault();
-                goToSlide(0);
-                break;
-            case 'End':
-                e.preventDefault();
-                goToSlide(totalSlides - 1);
-                break;
-            case 'Escape':
-                e.preventDefault();
-                showState(APP_STATES.FILE_SELECT);
-                break;
-        }
-    });
-}
 
-// Initialize application
-function initializeApp() {
-    try {
-        // Initialize MARP
-        initializeMarp();
-        
-        // Setup file handling
-        setupFileHandling();
-        
-        // Setup navigation
-        setupNavigation();
-        
-        // Show initial state
-        showState(APP_STATES.FILE_SELECT);
-        
-        console.log('MARP PWA initialized successfully');
-        
-    } catch (error) {
-        console.error('Initialization error:', error);
-        showError(`アプリケーションの初期化中にエラーが発生しました: ${error.message}`);
+        try {
+            this.showState(APP_STATES.PROCESSING);
+            const content = await this.readFileAsText(file);
+            await this.processMarpContent(content);
+            this.showState(APP_STATES.SLIDE_VIEW);
+            this.updateSlideCounter();
+        } catch (error) {
+            console.error('File processing error:', error);
+            this.showError(`ファイルの処理中にエラーが発生しました: ${error.message}`);
+        }
+    }
+
+    readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = () => reject(new Error('ファイルの読み込みに失敗しました'));
+            reader.readAsText(file);
+        });
+    }
+
+    async processMarpContent(content) {
+        try {
+            const processedContent = await this.processCustomStyles(content);
+            const { html, css } = this.marp.render(processedContent);
+            this.applyCustomStyles(css);
+            this.parseSlides(html);
+
+            if (this.slides.length === 0) {
+                throw new Error('スライドが見つかりませんでした');
+            }
+
+            this.currentSlideIndex = 0;
+            this.displayCurrentSlide();
+        } catch (error) {
+            throw new Error(`MARP処理エラー: ${error.message}`);
+        }
+    }
+
+    async processCustomStyles(content) {
+        let processedContent = content;
+        const themeMatch = content.match(/<!--\s*theme:\s*(\S+)\s*-->/i) ||
+            content.match(/^<!--\s*@theme:\s*(\S+)\s*-->$/mi);
+
+        if (themeMatch) {
+            console.log(`Theme detected: ${themeMatch[1]}`);
+        }
+
+        const cssBlocks = [];
+        const themeRegex = /<!--\s*\$theme:\s*css\s*-->([\s\S]*?)<!--\s*\/\$theme\s*-->/gi;
+        let themeMatch2;
+        while ((themeMatch2 = themeRegex.exec(content)) !== null) {
+            cssBlocks.push(themeMatch2[1].trim());
+        }
+
+        const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+        let styleMatch;
+        while ((styleMatch = styleRegex.exec(content)) !== null) {
+            cssBlocks.push(styleMatch[1].trim());
+        }
+
+        if (cssBlocks.length > 0) {
+            const customCSS = cssBlocks.join('\n');
+            window.customMarpCSS = customCSS;
+        }
+
+        return processedContent;
+    }
+
+    applyCustomStyles(marpCSS) {
+        const existingStyle = document.getElementById('marp-custom-styles');
+        if (existingStyle) existingStyle.remove();
+
+        const styleElement = document.createElement('style');
+        styleElement.id = 'marp-custom-styles';
+
+        let combinedCSS = marpCSS || '';
+
+        if (window.customMarpCSS) {
+            combinedCSS += '\n' + window.customMarpCSS;
+        }
+
+        combinedCSS += `
+            /* Emoji size fixes */
+            .slide-content img[alt*="emoji"],
+            .slide-content .emoji,
+            .slide-content img[src*="emoji"] {
+                height: 1.2em !important;
+                width: 1.2em !important;
+                max-height: 1.2em !important;
+                max-width: 1.2em !important;
+                display: inline-block !important;
+                vertical-align: -0.2em !important;
+                margin: 0 0.1em !important;
+                object-fit: contain !important;
+            }
+
+            /* MARP section styling enhancements */
+            .slide-content section {
+                box-sizing: border-box;
+            }
+
+            .slide-content section[data-theme] {
+                /* Allow theme-specific styling */
+            }
+        `;
+
+        styleElement.textContent = combinedCSS;
+        document.head.appendChild(styleElement);
+    }
+
+    parseSlides(html) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        const sections = tempDiv.querySelectorAll('section');
+
+        this.slides = Array.from(sections).map((section) => section.outerHTML);
+        this.totalSlides = this.slides.length;
+
+        const totalSlidesElement = document.getElementById('totalSlides');
+        if (totalSlidesElement) {
+            totalSlidesElement.textContent = this.totalSlides;
+        }
+    }
+
+    displayCurrentSlide() {
+        const slideContent = document.getElementById('slideContent');
+        if (slideContent && this.slides[this.currentSlideIndex]) {
+            slideContent.innerHTML = this.slides[this.currentSlideIndex];
+
+            const images = slideContent.querySelectorAll('img');
+            images.forEach((img) => {
+                if (img.alt && (img.alt.includes('emoji') || img.src.includes('emoji'))) {
+                    img.classList.add('emoji');
+                }
+            });
+        }
+
+        this.updateSlideCounter();
+    }
+
+    updateSlideCounter() {
+        const currentSlideElement = document.getElementById('currentSlide');
+        if (currentSlideElement) {
+            currentSlideElement.textContent = this.currentSlideIndex + 1;
+        }
+    }
+
+    nextSlide() {
+        if (this.currentSlideIndex < this.totalSlides - 1) {
+            this.currentSlideIndex++;
+            this.displayCurrentSlide();
+        }
+    }
+
+    prevSlide() {
+        if (this.currentSlideIndex > 0) {
+            this.currentSlideIndex--;
+            this.displayCurrentSlide();
+        }
+    }
+
+    goToSlide(index) {
+        if (index >= 0 && index < this.totalSlides) {
+            this.currentSlideIndex = index;
+            this.displayCurrentSlide();
+        }
+    }
+
+    showError(message) {
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.textContent = message;
+        }
+        this.showState(APP_STATES.ERROR);
+    }
+
+    setupNavigation() {
+        const prevButton = document.getElementById('prevSlide');
+        const nextButton = document.getElementById('nextSlide');
+        const backButton = document.getElementById('backToSelect');
+        const retryButton = document.getElementById('retryButton');
+
+        if (prevButton) prevButton.addEventListener('click', () => this.prevSlide());
+        if (nextButton) nextButton.addEventListener('click', () => this.nextSlide());
+
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                this.showState(APP_STATES.FILE_SELECT);
+                const fileInput = document.getElementById('fileInput');
+                if (fileInput) fileInput.value = '';
+            });
+        }
+
+        if (retryButton) {
+            retryButton.addEventListener('click', () => {
+                this.showState(APP_STATES.FILE_SELECT);
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const slideView = document.getElementById('slide-view');
+            if (!slideView || !slideView.classList.contains('active')) return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    e.preventDefault();
+                    this.prevSlide();
+                    break;
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    e.preventDefault();
+                    this.nextSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    this.goToSlide(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    this.goToSlide(this.totalSlides - 1);
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    this.showState(APP_STATES.FILE_SELECT);
+                    break;
+            }
+        });
     }
 }
 
-// Start the application when DOM is ready
+const app = new MarpPWA();
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApp);
+    document.addEventListener('DOMContentLoaded', () => app.initialize());
 } else {
-    initializeApp();
+    app.initialize();
 }
+
