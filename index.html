@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARP スライドビューア</title>
+    <meta name="description" content="MARPマークダウンプレゼンテーションを表示するPWA">
+    <meta name="theme-color" content="#21808d">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTUFSUCDjgrnjg6njgqTjg4jjg5Pjg6Xjg7zjgqIiLCJzaG9ydF9uYW1lIjoiTUFSUCBWaWV3ZXIiLCJkZXNjcmlwdGlvbiI6Ik1BUlDjg57jg7zjgq/jg4Djgqbjg7Pjg5fjg6zjgrzjg7Pjg4bjg7zjgrfjg6fjg7PjgpLooajnpLrjgZnjgotQV0EiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmY2ZjZjkiLCJ0aGVtZV9jb2xvciI6IiMyMTgwOGQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRrNUlpQm9aV2xuYUhROUlqRTVPU0lnZG1sbGQwSnZlRDBpTUNBd0lERTVPU0F4T1RraUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU1UYzVJaUJvWldsbmFIUTlJakUzT1NJZ1ptbHNiRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqSWlMejQ4ZEdWNGRIZ3lJSGs5SWpFeE5TSWdlVDBpT0RBaUlHVnRjejBpWXk0eU5TQXdJR05oYkNneExtVndlQ2tnZUNFOU1EVTRNQ0J6UTNGNUlDazdiMmxzT21SbFptRjFiSFFpSUdac2JITmZhV1E5SWpOaE9HVXhNV1YwT0RCaElqNE5Qa0ZTVUE0OEwzUmxlSFIrUEM5emRtYysiLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9LHsic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnZG1sbGQwSnZlRDBpTUNBd0lEVXhNaUExTVRJaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1qVWlJSGs5SWpJMUlpQjNhV1IwYUQwaU5EWXlJaUJvWldsbmFIUTlJalEyTWlJZ1ptbHNiRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqVWlMejQ4ZEdWNGRIZ3lJSGs5SWpJMU5pSWdlVDBpTWpFd0lpQmxiWE05SWpBdU5qVnNjM0JzZUNoQk9HTjFjV3NaVVVOSkszUElyWVJHYVVsMVlhVWllMVZwU1o5SGVpVm5leUJ6UTFGNUtDd2dUVGcxTnpOdmFTRklaVGRzWEcxWlNIVk9Va0ppWWtORFNHSjliR0ZmY1NCelpqSmpaWFV3VEVKSlYwOVhNRzV5Y1ZVZ1ptVmlSNDlwVWtkYWVuZFdJaUJwYkdGa1pXVnNQU0o2TWk5TGMzVTJaMlZzWEMxNkxqTlZibUY5Um1seE5IcHhhemNyVW1KcGRYRGplWGxCUnk5eVVYY2lJR1pwYkd4ZmMzUmdkRDBpSTJabVptWm1aaUlnYzNSeWIydGxQU0lqTXpNNE1EZ3pJaUJ6ZEhKdmEyVXRkMmxrZEdnOUlqVWlMejQ4ZEdWNGRIZ3lJSGs5SWpJMU5pSWdlVDBpTWpjMElpQmxiWE05SWpFdU1qVnNjM0JzWEZoaU8yVm5haUp1SUdac2JITmZhV1E5SWpOaE9HVXhNV1YwT0RCaElqNE5Qa0ZTVUE0OEwzUmxlSFIrUEM5emRtYysiLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XSwiY2F0ZWdvcmllcyI6WyJwcm9kdWN0aXZpdHkiLCJidXNpbmVzcyJdfQ==">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Preload MARP Core -->
+    <link rel="modulepreload" href="https://esm.sh/@marp-team/marp-core?bundle">
+    
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MARPビューア">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">MARP スライドビューア</h1>
+                <div class="header-controls">
+                    <button class="btn btn--secondary btn--sm" id="themeToggle" title="テーマ切り替え">
+                        🌙
+                    </button>
+                    <button class="btn btn--primary btn--sm" id="loadFileBtn">
+                        📁 ファイルを開く
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- File Upload Area -->
+            <div class="file-drop-zone" id="fileDropZone">
+                <div class="file-drop-content">
+                    <div class="file-drop-icon">📄</div>
+                    <h2>MARPファイルをここにドロップ</h2>
+                    <p>または<button class="btn btn--outline" id="selectFileBtn">ファイルを選択</button></p>
+                    <p class="file-drop-note">対応形式: .md, .marp, .markdown</p>
+                </div>
+            </div>
+
+            <!-- Slide Display Area -->
+            <div class="slide-container" id="slideContainer" style="display: none;">
+                <div class="slide-wrapper">
+                    <div class="slide-content" id="slideContent"></div>
+                </div>
+                
+                <!-- Slide Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" id="firstSlideBtn" title="最初のスライド">⏮</button>
+                    <button class="nav-btn" id="prevSlideBtn" title="前のスライド">◀</button>
+                    <div class="slide-counter">
+                        <span id="currentSlide">1</span> / <span id="totalSlides">1</span>
+                    </div>
+                    <button class="nav-btn" id="nextSlideBtn" title="次のスライド">▶</button>
+                    <button class="nav-btn" id="lastSlideBtn" title="最後のスライド">⏭</button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>MARP PWA - Progressive Web App for Markdown Presentations</p>
+            <div class="keyboard-shortcuts">
+                <span>⌨️ キーボード操作: ←→ スライド移動 | Space 次へ | Home/End 最初/最後</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="fileInput" accept=".md,.marp,.markdown" style="display: none;">
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdtYXJwLXB3YS12MSc7CmNvbnN0IFVSTFNUX1RPX0NBQ0hFID0gWwogICcuLycsCiAgJy4vaW5kZXguaHRtbCcsCiAgJy4vc3R5bGUuY3NzJywKICAnLi9hcHAuanMnLAogICdodHRwczovL2VzbS5zaC9AbWFycC10ZWFtL21hcnAtY29yZT9idW5kbGUnLAogICdodHRwczovL2VzbS5zaC9AbWFycC10ZWFtL21hcnAtY29yZS9icm93c2VyP2J1bmRsZScKXTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsIGV2ZW50ID0+IHsKICBldmVudC53YWl0VW50aWwoY2FjaGVzLm9wZW4oQ0FDSEVfTkFNRSkudGhlbihjYWNoZSA9PiBjYWNoZS5hZGRBbGwoVVJMU19UT19DQUNIRSkpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpLnRoZW4ocmVzcG9uc2UgPT4gewogICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICB9KQogICk7Cn0pOw==')
+              .then(registration => console.log('Service Worker registered'))
+              .catch(error => console.log('Service Worker registration failed:', error));
+        }
+    </script>
+
+    <!-- App JavaScript -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
